@@ -15,15 +15,15 @@ var validPorts = ["com.tty.foo", "com.tty.foo", "com.tty.foo", "com.tty.foo"];
 var READ_RATE = 800;// frequency at which we query the S4/S5 in ms
 var BAUD_RATE = 19200;// baud rate of the S4/S5 com port connection
 
-
-connetion.state = {
+var connection = {};
+connection.state = {
 	CLOSED:"com.waterrower.state.closed",
 	CONNECTING:"com.waterrower.state.connecting",
 	CONNECTED:"com.waterrower.state.connected",
 	ERRORED:"com.waterrower.state.errored",
 };
 
-var state = connetion.state.CLOSED;
+var state = connection.state.CLOSED;
 
 exports.readStrokeCount = function(callback) { //TODO: async callback with (err, value) arguments
 return values["STROKE_COUNT"];
@@ -47,15 +47,15 @@ return values["HEARTRATE"];
 
 
 
-getState = function() {
+var getState = function() {
   return (state);
 }
 
-putState =function(value) {
+var putState =function(value) {
   state = value;
 }
 
-open = function() {
+var open = function() {
     resetMessage();
     getPort(function(data){
 
@@ -63,14 +63,14 @@ open = function() {
     state = "open";
 }
 
-close = function() {
+var close = function() {
   debug("waterrower closed");
   conn.close();
   state = "closed";
 }
 
 // serialport functions
-getPort = function() {
+var getPort = function() {
   var ports;
   var i = 0;
   portname = "NULL";
@@ -129,7 +129,7 @@ var readWrite = function() {
 setInterval(readWrite, READ_RATE);
 
 
-read = function(callback) {
+var read = function(callback) {
           debug("in read connecting to " + portname);
           state = "connecting";
 	  conn = new com.SerialPort(portname, {
@@ -178,7 +178,7 @@ read = function(callback) {
 };
 
 
-write = function(buffer) {
+var write = function(buffer) {
   debug(">" + buffer)
   conn.write(buffer + "\r\n",  function(err, result) {
     if (err == null)
@@ -222,7 +222,7 @@ values["AVERAGE_SPEED"] = 0;
 values["DISTANCE"] = 0;
 values["HEARTRATE"] = 0;
 
-readMessage = function(message) {
+var readMessage = function(message) {
     var response = {device:'unknown', parameters:[], connected:false};
     message = message.trim();
     debug(message);
@@ -288,7 +288,7 @@ readMessage = function(message) {
     return (response);
 }
 
-resetMessage = function() {
+var resetMessage = function() {
     type = "unknown";
     nextMessage = "USB";
 }
