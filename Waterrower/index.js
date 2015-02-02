@@ -9,7 +9,7 @@ var values = [];
 var conn;
 var portname = "NULL";
 var debug = process.env.DEBUG?console.log():function(){};
-var validPorts = ["com.tty.foo", "com.tty.foo", "com.tty.foo", "com.tty.foo"];
+var validPorts = ["com.tty.foo", "com.tty.foo", "com.tty.foo", "com.tty.foo"]; //TODO: connect to rower or arduino simulator
 
 // State of the USB Serial connection
 var READ_RATE = 800;// frequency at which we query the S4/S5 in ms
@@ -30,19 +30,19 @@ return values["STROKE_COUNT"];
 }
 
 exports.readTotalSpeed = function(callback) { //TODO: async callback with (err, value) arguments
-return values["TOTAL_SPEED"];
+return values["TOTAL_SPEED"]/100;// m/s
 }
 
 exports.readAverageSpeed = function(callback) { //TODO: async callback with (err, value) arguments
-return values["AVERAGE_SPEED"];
+return values["AVERAGE_SPEED"]/100;// m/s
 }
 
 exports.readDistance = function(callback) { //TODO: async callback with (err, value) arguments
-return values["DISTANCE"];
+return values["DISTANCE"];// m
 }
 
 exports.readHeartRate = function(callback) { //TODO: async callback with (err, value) arguments
-return values["HEARTRATE"];
+return values["HEARTRATE"];// bpm
 }
 
 
@@ -57,9 +57,7 @@ var putState =function(value) {
 
 var open = function() {
     resetMessage();
-    getPort(function(data){
-
-    });
+    getPort();
     state = "open";
 }
 
