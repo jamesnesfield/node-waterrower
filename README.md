@@ -6,7 +6,7 @@ An interface to the Waterrower rowing machine. Connect the Waterrower display to
 
 The node module does its best to identify the port that the Waterrower is using, and this has always worked with the limited number of systems at our disposal. They are MAC OS/10, Raspbian, Ubunutu and Windows. See below for troubleshooting.
 
-Simple API currently exposes: Stroke Rate, Total Speed, Average Speed, Distance, Heart Rate. This example use will display the Waterrower values and update them every 2 seconds.
+Simple API currently exposes: Stroke Rate, Total Speed, Average Speed, Distance, Heart Rate. This example will display the Waterrower values and update them every 2 seconds.
 
 
 ```
@@ -14,11 +14,11 @@ var waterrower = require("./Waterrower");
  
 var readWaterrower = function() {
 
-  console.log("Stroke Rate ...................." + waterrower.readStrokeCount());	// [ - ]
-  console.log("Total Speed ...................." + waterrower.readTotalSpeed()); 	// [m/s]
-  console.log("Average Speed .................." + waterrower.readAverageSpeed());	// [m/s]
-  console.log("Distance... ...................." + waterrower.readDistance());		// [ m ]
-  console.log("Heart Rate ....................." + waterrower.readHeartRate());		// [bpm]
+  console.log("Stroke Rate ....." + waterrower.readStrokeCount());	// [ - ]
+  console.log("Total Speed ....." + waterrower.readTotalSpeed()); 	// [m/s]
+  console.log("Average Speed ..." + waterrower.readAverageSpeed());	// [m/s]
+  console.log("Distance... ....." + waterrower.readDistance());		// [ m ]
+  console.log("Heart Rate ......" + waterrower.readHeartRate());	// [bpm]
 
 }
 
