@@ -8,22 +8,14 @@ var response = {device:'unknown', connected:false};
 var values = [];
 var conn;
 var portname = "NULL";
+var type = process.env.TYPE || 'wr5';
 var debug = process.env.DEBUG?console.log():function(){};
-var validPorts = ["com.tty.foo", "com.tty.foo", "com.tty.foo", "com.tty.foo"];
-
+var state = 'closed'
 // State of the USB Serial connection
 var READ_RATE = 800;// frequency at which we query the S4/S5 in ms
 var BAUD_RATE = 19200;// baud rate of the S4/S5 com port connection
 
-
-connetion.state = {
-	CLOSED:"com.waterrower.state.closed",
-	CONNECTING:"com.waterrower.state.connecting",
-	CONNECTED:"com.waterrower.state.connected",
-	ERRORED:"com.waterrower.state.errored",
-};
-
-var state = connetion.state.CLOSED;
+console.log(process.env.DEBUG)
 
 exports.readStrokeCount = function(callback) { //TODO: async callback with (err, value) arguments
 return values["STROKE_COUNT"];
@@ -47,15 +39,17 @@ return values["HEARTRATE"];
 
 
 
-getState = function() {
+var getState = function() {
   return (state);
 }
 
-putState =function(value) {
+exports.state = getState;
+
+var putState =function(value) {
   state = value;
 }
 
-open = function() {
+var open = function() {
     resetMessage();
     getPort(function(data){
 
@@ -63,14 +57,14 @@ open = function() {
     state = "open";
 }
 
-close = function() {
+var close = function() {
   debug("waterrower closed");
   conn.close();
   state = "closed";
 }
 
 // serialport functions
-getPort = function() {
+var getPort = function() {
   var ports;
   var i = 0;
   portname = "NULL";
@@ -89,12 +83,11 @@ var readWrite = function() {
 	state = getState();
 	switch (state) {
 		case "closed":
-			debug("in readWrite closed call open");
+			debug("attempting to open port");
 			open();
 			break;
 		case "open":
-			if(debug) console.log("in readWrite open call read");
-			count = 0;
+			debug("in readWrite open call read");
 			read(function(data) {
 				if (data == "disconnected") {
 					putState("closed")
@@ -129,16 +122,17 @@ var readWrite = function() {
 setInterval(readWrite, READ_RATE);
 
 
-read = function(callback) {
-          debug("in read connecting to " + portname);
-          state = "connecting";
+var read = function(callback) {
+	
+      debug("in read connecting to " + portname);
+      state = "connecting";
 	  conn = new com.SerialPort(portname, {
 	    baudrate: BAUD_RATE, disconnectedCallback:function () { callback("disconnected") },
 	    parser: com.parsers.readline("\n")
 	  });
 	  conn.on("error", function(err) {
 	    debug("in read " + err);
-	    console.log("Cannot connect to " + portname);
+	    debug("Cannot connect to " + portname);
 	    state = "error";
 	    callback(state);
 	  });
@@ -178,7 +172,7 @@ read = function(callback) {
 };
 
 
-write = function(buffer) {
+var write = function(buffer) {
   debug(">" + buffer)
   conn.write(buffer + "\r\n",  function(err, result) {
     if (err == null)
@@ -222,7 +216,7 @@ values["AVERAGE_SPEED"] = 0;
 values["DISTANCE"] = 0;
 values["HEARTRATE"] = 0;
 
-readMessage = function(message) {
+var readMessage = function(message) {
     var response = {device:'unknown', parameters:[], connected:false};
     message = message.trim();
     debug(message);
@@ -288,7 +282,7 @@ readMessage = function(message) {
     return (response);
 }
 
-resetMessage = function() {
+var resetMessage = function() {
     type = "unknown";
     nextMessage = "USB";
 }
