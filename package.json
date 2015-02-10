@@ -1,6 +1,6 @@
 {
   "name": "node-waterrower",
-  "version": "0.1.3",
+  "version": "0.1.9",
   "description": "a node server for communicating with the WaterRower S4/S5 USB performance monitor",
   "main": "Waterrower",
   "scripts": {
