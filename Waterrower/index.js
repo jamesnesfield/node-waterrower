@@ -122,8 +122,8 @@ var readWrite = function() {
 setInterval(readWrite, READ_RATE);
 
 
-var read = function(callback) {
-	
+var read = function(callback) { // this should be 'setup'
+
       debug("in read connecting to " + portname);
       state = "connecting";
 	  conn = new com.SerialPort(portname, {
@@ -138,12 +138,12 @@ var read = function(callback) {
 	  });
 	  conn.on("open", function () {
 	    debug("in read open");
-	    state = "read";
+	    state = "read"; // state should be 'open'
 	    callback("");
 	  });
 	  conn.on("closed", function () {
 	    debug("in read closed");
-	    state = "read";
+	    state = "read"; // state should be 'closed'
 	    callback("");
 	  });
 	  conn.on("data", function(data) {
