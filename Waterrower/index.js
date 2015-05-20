@@ -9,7 +9,7 @@ var values = [];
 var conn;
 var portname = "NULL";
 var type = process.env.TYPE || 'wr5';
-var debug = process.env.DEBUG?console.log():function(){};
+var debug = process.env.DEBUG?console.log:function(){};
 var state = 'closed'
 // State of the USB Serial connection
 var READ_RATE = 800;// frequency at which we query the S4/S5 in ms
@@ -258,8 +258,8 @@ var readMessage = function(message) {
 	response.device = 'waterrower';
 	response.connected = true;
 	if (message.length >= 6){
-		if (this.wr5.hasOwnProperty(message.substring(0, 6))) {
-			var _key = this.wr5[message.substring(0, 6)]["response"];
+		if (wr5.hasOwnProperty(message.substring(0, 6))) {
+			var _key = wr5[message.substring(0, 6)]["response"];
 			if (message.length > 6) {
 				values[_key] = ACHtoDecimal(message.substring(6));
 			}
@@ -290,7 +290,7 @@ var resetMessage = function() {
 function ACHtoDecimal(input) {
 	var value;
 	var total = 0;
-	for (i = 0; i < input.length; i++) {
+	for (var i = 0; i < input.length; i++) {
 		total = total * 16;
 		value = input.charCodeAt(i) - 48;
 		if (value > 9) {
@@ -304,7 +304,7 @@ function ACHtoDecimal(input) {
 function ACHtoDecimalReverse(input) {
 	var value;
 	var total = 0;
-	for (i = input.length - 1; i >= 0; i--) {
+	for (var i = input.length - 1; i >= 0; i--) {
 		total = total * 16;
 		value = input.charCodeAt(i) - 48;
 		if (value > 9) {
