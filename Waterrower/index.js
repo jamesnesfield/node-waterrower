@@ -205,7 +205,8 @@ var wr5 ={
 	"IDD140":{"response":"STROKE_COUNT","next":"IRD148"},
 	"IDD148":{"response":"TOTAL_SPEED","next":"IRD14A"},
 	"IDD14A":{"response":"AVERAGE_SPEED","next":"IRD057"},
-	"IDD057":{"response":"DISTANCE","next":"IRS1A0"},
+	"IDD057":{"response":"DISTANCE","next":"IRS088"},
+	"IDD088":{"response":"WATTS","next":"IRS1A0"},
 	"IDS1A0":{"response":"HEARTRATE","next":"IRD140"},
 	"AKR":{"response":"RESET","next":"IRD140"}
 	};
@@ -214,6 +215,7 @@ values["STROKE_COUNT"] = 0;
 values["TOTAL_SPEED"] = 0;
 values["AVERAGE_SPEED"] = 0;
 values["DISTANCE"] = 0;
+values["WATTS"] = 0;
 values["HEARTRATE"] = 0;
 
 var readMessage = function(message) {
